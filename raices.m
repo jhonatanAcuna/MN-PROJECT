@@ -622,4 +622,61 @@ function resolver_Callback(hObject, eventdata, handles)
 % hObject    handle to resolver (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+funcion = get(handles.edit1, 'String');
+limiInf = get(handles.limInf, 'String');
+limiSup = get(handles.limSup, 'String');
+tole = get(handles.eT_error, 'String');
+tipoRes = get(handles.menuForms, 'Value');
+switch(tipoRes)
+    case 1  %biseccion
+        fun = inline(funcion);
+        a = str2num(limiInf);
+        b = str2num(limiSup);
+        tol = str2double(tole);
+        tab = {'a','b','m','f(a)','f(b)','f(m)','error'};
+        %uitable
+        if a>b
+            aa=a ; 
+            a=b ;
+            b=aa ;
+        end 
+        xm=(a+b ) / 2 ;
+        if fun ( a ) *fun ( b )>0 
+            set(handles.Raiz, 'String', 'ERROR: Revise el intervalo');
+            drawnow;
+        elseif abs (b - a )<tol
+            raiz=xm ;
+        else
+            cont=2;
+            while ( ( fun ( xm ) ~=0)&& abs (b - a )>tol )
+                if fun ( xm ) *fun ( b )<0
+                    a=xm ;
+                else
+                    b=xm ;
+                end 
+                xm=(a+b ) / 2 ;
+                tab(cont,:) = {a,b,xm,fun(a),fun(b),fun(b),abs(b-a)};
+                cont = cont+1;
+            end
+            raiz=xm ;
+        end
+        set(handles.Raiz, 'String', num2str(raiz));
+        set(handles.uitable,'Data',tab);
+        drawnow;
+    case 2  %newton
+        disp('biseccion');
+    case 3  %secante
+        disp('biseccion');
+    case 4  %falsa posicion
+        disp('biseccion');
+    case 5  %falsa posicion modificada
+        disp('biseccion');
+    otherwise
+        disp('ERROR: METHOD');
+end
+
+%set(handles.Raiz, 'String', 'sdf');
+%drawnow;
+
+
     
