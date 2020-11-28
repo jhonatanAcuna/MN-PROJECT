@@ -22,7 +22,7 @@ function varargout = raices(varargin)
 
 % Edit the above text to modify the response to help raices
 
-% Last Modified by GUIDE v2.5 26-Nov-2020 09:39:57
+% Last Modified by GUIDE v2.5 28-Nov-2020 11:50:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -663,20 +663,217 @@ switch(tipoRes)
         set(handles.Raiz, 'String', num2str(raiz));
         set(handles.uitable,'Data',tab);
         drawnow;
+        
     case 2  %newton
-        disp('biseccion');
+        syms x;
+        x0 = str2num(limiInf);
+        f  = inline(funcion);
+        dxf= inline(diff(str2sym(funcion),x));
+        N = 2;
+        tol = str2double(tole);
+        
+        maxDiv = 10000;
+        x =x0;
+        tab = {'i','x','f(x)','n(x)','error'};
+        while (N<10000)
+            xn = x -f(x)/dxf(x );
+            tab(N,:) = {N-1,x,f(x),xn,abs(f(x))};
+            if abs(f(xn))<tol
+                x =xn;
+                iter=100-N;
+                set(handles.Raiz, 'String', num2str(x));
+                set(handles.uitable,'Data',tab);
+                drawnow;
+                break;
+            end;
+            if abs(f(x ))>maxDiv
+                set(handles.Raiz, 'String', 'Se alcanzo el numero maximo de iteraciones');
+                set(handles.uitable,'Data',tab);
+                drawnow;
+                break;
+            end;
+            N = N + 1;
+            x = xn;
+            
+         end;
+        if N == 10000
+         set(handles.Raiz, 'String', 'La solucion no converge');
+        end
+         
     case 3  %secante
-        disp('biseccion');
+        fun = inline(funcion);
+        a = str2num(limiInf);
+        b = str2num(limiSup);
+        tol = str2double(tole);
+        
+        u=fun(a);
+        v=fun(b);
+        c=2;
+        p0=a;
+        p1=b;
+        tab = {'i','x','x-1','x+1','f(x)','f(x-1)','error'};
+        while abs (u)>tol
+            tab(c,:) = {c,p0,p1,(p0-u*(p1-p0)/(v-u)),u,v,abs(u)};
+            p=p0-u*(p1-p0)/(v-u);
+            p0=p;
+            p1=b;
+            u=fun(p0);
+            v=fun(p1);
+            c=c+1
+        end
+        
+        set(handles.Raiz, 'String', num2str(p0));
+        set(handles.uitable,'Data',tab);
+        drawnow;
+        
     case 4  %falsa posicion
-        disp('biseccion');
-    case 5  %falsa posicion modificada
-        disp('biseccion');
-    otherwise
-        disp('ERROR: METHOD');
+        Fx = funcion;
+        a = str2num(limiInf);
+        c = str2num(limiSup);
+        e = str2double(tole);
+        
+        x=a;
+        Fa=eval(Fx);
+        x=c;
+        Fc=eval(Fx);
+        cont=1;
+        tab = {'i','a','b','f(a)','f(b)','c','f(c)','error'};
+        while abs(c-a)>e
+            cont = cont+1;
+            b=(c*Fa-a*Fc)/(Fa-Fc);
+            x=b;
+            Fb=eval(Fx);
+            tab(cont,:) = {cont,a,b,Fa,Fb,c,Fc,abs(c-a)};
+            if abs(Fc)<e
+                 break;
+            else    
+                if Fa*Fb<=0
+                    c=b;
+                    Fc=Fb;
+                else
+                     a=b;
+                    Fa=Fb;
+                end
+            end
+        end
+        set(handles.Raiz, 'String', num2str(b));
+        set(handles.uitable,'Data',tab);
+        drawnow;
+        
+   otherwise
+       set(handles.Raiz, 'String', 'ERROR: metodo no encontrado');
 end
-
+%writecell to save data in excel file
 %set(handles.Raiz, 'String', 'sdf');
 %drawnow;
 
 
     
+
+
+% --- Executes on button press in exportButton.
+function exportButton_Callback(hObject, eventdata, handles)
+% hObject    handle to exportButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.ruteEdit,'visible','on');
+set(handles.selectTypeExport, 'visible','on');
+set(handles.exportReady, 'visible','on');
+set(handles.nameFile,'visible','on');
+set(handles.text77,'visible','on');
+set(handles.text78,'visible','on');
+
+
+
+function ruteEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to ruteEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ruteEdit as text
+%        str2double(get(hObject,'String')) returns contents of ruteEdit as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ruteEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ruteEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in selectTypeExport.
+function selectTypeExport_Callback(hObject, eventdata, handles)
+% hObject    handle to selectTypeExport (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns selectTypeExport contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from selectTypeExport
+
+
+% --- Executes during object creation, after setting all properties.
+function selectTypeExport_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to selectTypeExport (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in exportReady.
+function exportReady_Callback(hObject, eventdata, handles)
+% hObject    handle to exportReady (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ruteFile = get(handles.ruteEdit, 'String');
+nameFile = get(handles.nameFile, 'String');
+data = get(handles.uitable, 'data');
+disp(string(data));
+typeFile = get(handles.selectTypeExport, 'Value');
+
+switch(typeFile)
+    case 1
+        ruteFull = strcat(ruteFile,'\',nameFile,'.csv');
+        writematrix(string(data),ruteFull);
+    case 2
+        ruteFull = strcat(ruteFile,'\',nameFile,'.xlsx');
+        xlswrite(ruteFull,data);
+    case 3
+        ruteFull = strcat(ruteFile,'\',nameFile,'.txt');
+        writecell(data,ruteFull);
+    otherwise
+        
+end
+
+
+
+function nameFile_Callback(hObject, eventdata, handles)
+% hObject    handle to nameFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of nameFile as text
+%        str2double(get(hObject,'String')) returns contents of nameFile as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function nameFile_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to nameFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
