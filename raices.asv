@@ -916,7 +916,8 @@ imag=imread('newton.bmp');
 imshow(imag);
 
 axes(handles.ejercicio);
-imag=imread('NewEjer1.png');
+imag=imread('NewtonEjercicio.jpg');
+Scrollable 
 imshow(imag);
 
 % --- Executes on button press in pushbutton82.
