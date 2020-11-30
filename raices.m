@@ -22,7 +22,7 @@ function varargout = raices(varargin)
 
 % Edit the above text to modify the response to help raices
 
-% Last Modified by GUIDE v2.5 30-Nov-2020 00:03:24
+% Last Modified by GUIDE v2.5 30-Nov-2020 10:15:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -535,10 +535,11 @@ close(handles.output);
 
 % --- Executes on button press in btnPriMetNum.
 function btnPriMetNum_Callback(hObject, eventdata, handles)
-set(handles.panelmetodos,"Visible","on");
-set(handles.panelteclado,"Visible","on");
-set(handles.panelnavegacion,"Visible","on");
-set(handles.principal,"Visible","off");
+%set(handles.panelmetodos,"Visible","on");
+%set(handles.panelteclado,"Visible","on");
+%set(handles.panelnavegacion,"Visible","on");
+%set(handles.principal,"Visible","off");
+set(handles.teoria,"Visible", "on");
 
 
 % --- Executes on button press in pushbutton65.
@@ -890,27 +891,41 @@ function teoria_CreateFcn(hObject, eventdata, handles)
 
 % --- Executes on button press in pushbutton77.
 function pushbutton77_Callback(hObject, eventdata, handles)
-set(handles.panelmetodos,"Visible","on");
-set(handles.panelteclado,"Visible","on");
-set(handles.panelnavegacion,"Visible","on");
+set(handles.principal,"Visible","on");
 set(handles.teoria,"Visible","off");
+set(handles.panelmetodos,"Visible","off");
+set(handles.panelteclado,"Visible","off");
+set(handles.panelnavegacion,"Visible","off");
 
 
 % --- Executes on button press in pushbutton79.
 function pushbutton79_Callback(hObject, eventdata, handles)
-winopen('METODO DE LA BISECCIÓN.pdf');
+set(handles.nombreMetodo,"String","Metodo de Biseccion");
+set(handles.metodDefinicion,"String","Es el método más elemental y antiguo para determinar las raíces de una ecuación. Está basado directamente en el teorema de Bolzano Consiste en partir de un intervalo [x0,x1]tal que f(x0)f(x1) < 0, por lo que sabemos que existe, al menos, una raíz real. A partir de este punto se va reduciendo el intervalo sucesivamente hasta hacerlo tan pequeño como exija la precisión que hayamos decidido emplear.")
 
 
 % --- Executes on button press in pushbutton81.
 function pushbutton81_Callback(hObject, eventdata, handles)
-winopen('METODO DE NEWTON.pdf');
+set(handles.nombreMetodo,"String","Metodo de Newton");
+set(handles.metodDefinicion,"String","El método numérico de Newton es una aplicación del cálculo diferencial que se utiliza para hallar los ceros de una función derivable de enésimo grado con la precisión deseada. Los procedimientos para hallar las raíces o ceros de funciones lineales o cuadráticas a partir de los coeficientes de la ecuación son sencillos y exactos. Aunque existen fórmulas para hallar las raíces de ecuaciones de tercer y cuarto grado, dichas formulas son muy complicadas y nada prácticas.");
 
 
 % --- Executes on button press in pushbutton82.
 function pushbutton82_Callback(hObject, eventdata, handles)
-winopen('METODO DE FALSA POSICION.pdf');
+set(handles.nombreMetodo,"String","Metodo de Falsa posicion");
+set(handles.metodDefinicion,"String","Aun cuando la bisección es una técnica perfectamente válida para determinar raíces, su método de aproximación por fuerza bruta es relativamente ineficiente. La falsa posición es una alternativa basada en una visualización gráfica.Un inconveniente del método de bisección es que al dividir el intervalo de x1 a xu en mitades iguales, no se toman en cuenta las magnitudes de f(x1) y f(xu). Por ejemplo, si f(x1) está mucho más cercana a cero quef(xu), es lógico que la raíz se encuentre más cerca de x1 que de xu. Un método alternaticvo que aprovecha esta visualización gráfica consiste en unir f(x1) y f(xu) con una línea recta. La intersección de esta línea con el eje de las x representa un mejor aproximación de la raíz. El hecho de que se reemplace la curva por una línea recta de una falsa posición de la raíz; de aquí el nombre de método de la falsa posición, o en latín,regula falsi. También se le conoce como método de interpolación lineal.");
 
 
 % --- Executes on button press in pushbutton83.
 function pushbutton83_Callback(hObject, eventdata, handles)
-winopen('METODO DE LA SECANTE.pdf');
+set(handles.nombreMetodo,"String","Metodo de la Secante")
+set(handles.metodDefinicion,"String","El método de la secante es un método para encontrar los ceros de una función de forma iterativa. Uno de los objetivos de este método es eliminar el problema de la derivada de la función, ya que existen funciones que describen fenómenos físicos en la vida real, cuya derivada es muy compleja.");
+
+
+% --- Executes on button press in pushbutton84.
+function pushbutton84_Callback(hObject, eventdata, handles)
+set(handles.panelmetodos,"Visible","on");
+set(handles.panelteclado,"Visible","on");
+set(handles.panelnavegacion,"Visible","on");
+set(handles.principal,"Visible","off");
+set(handles.teoria,"Visible","off");
