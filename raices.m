@@ -22,7 +22,7 @@ function varargout = raices(varargin)
 
 % Edit the above text to modify the response to help raices
 
-% Last Modified by GUIDE v2.5 28-Nov-2020 11:50:25
+% Last Modified by GUIDE v2.5 30-Nov-2020 00:03:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -543,9 +543,12 @@ set(handles.principal,"Visible","off");
 
 % --- Executes on button press in pushbutton65.
 function pushbutton65_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton65 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+set(handles.panelmetodos,"Visible","off");
+set(handles.panelteclado,"Visible","off");
+set(handles.panelnavegacion,"Visible","off");
+set(handles.principal,"Visible","off");
+set(handles.teoria,"Visible","on");
+
 
 
 % --- Executes on selection change in menuForms.
@@ -877,3 +880,37 @@ function nameFile_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes during object creation, after setting all properties.
+function teoria_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to teoria (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% --- Executes on button press in pushbutton77.
+function pushbutton77_Callback(hObject, eventdata, handles)
+set(handles.panelmetodos,"Visible","on");
+set(handles.panelteclado,"Visible","on");
+set(handles.panelnavegacion,"Visible","on");
+set(handles.teoria,"Visible","off");
+
+
+% --- Executes on button press in pushbutton79.
+function pushbutton79_Callback(hObject, eventdata, handles)
+winopen('METODO DE LA BISECCIÓN.pdf');
+
+
+% --- Executes on button press in pushbutton81.
+function pushbutton81_Callback(hObject, eventdata, handles)
+winopen('METODO DE NEWTON.pdf');
+
+
+% --- Executes on button press in pushbutton82.
+function pushbutton82_Callback(hObject, eventdata, handles)
+winopen('METODO DE FALSA POSICION.pdf');
+
+
+% --- Executes on button press in pushbutton83.
+function pushbutton83_Callback(hObject, eventdata, handles)
+winopen('METODO DE LA SECANTE.pdf');
